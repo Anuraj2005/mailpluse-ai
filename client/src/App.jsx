@@ -26,6 +26,17 @@ export function App() {
 
   const [isInitializing, setIsInitializing] = useState(true);
 
+  useEffect(() => {
+    if (!user) {
+      queryClient.removeQueries({ queryKey: ['emails'] });
+      setSelectedThreadId(null);
+      return;
+    }
+
+    queryClient.invalidateQueries({ queryKey: ['emails'] });
+    setSelectedThreadId(null);
+  }, [user, queryClient, setSelectedThreadId]);
+
   // Initialize Auth Status
   useEffect(() => {
     async function checkAuth() {
