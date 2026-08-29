@@ -3,6 +3,11 @@ import { User } from '../models/User.js';
 import { isDbConnected } from '../config/db.js';
 import { activeUserStore } from '../services/userStore.js';
 
+function normalizeUserRecord(user) {
+  if (!user) return null;
+  return typeof user.toObject === 'function' ? user.toObject({ getters: true }) : user;
+}
+
 export async function authMiddleware(req, res, next) {
   try {
     let token = null;
@@ -35,6 +40,8 @@ export async function authMiddleware(req, res, next) {
       if (!user && decoded.sessionId) {
         user = activeUserStore.getSession(decoded.sessionId);
       }
+
+      user = normalizeUserRecord(user);
 
       if (user && decoded.sessionId) {
         activeUserStore.setSession(decoded.sessionId, user);

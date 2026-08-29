@@ -6,6 +6,11 @@ import { isDbConnected } from '../config/db.js';
 import { activeUserStore } from './userStore.js';
 import { logger } from '../utils/logger.js';
 
+function normalizeUserRecord(user) {
+  if (!user) return null;
+  return typeof user.toObject === 'function' ? user.toObject({ getters: true }) : user;
+}
+
 export class GmailService {
   /**
    * Helper to construct authenticated Gmail API client from user tokens
@@ -19,6 +24,7 @@ export class GmailService {
     if (!user && isDbConnected()) {
       user = await User.findById(userId);
     }
+    user = normalizeUserRecord(user);
     
     if (!user || !user.tokens?.accessToken) {
       return null;
@@ -106,8 +112,16 @@ export class GmailService {
         }
       };
     } catch (err) {
-      logger.error('Gmail API list error, falling back to mock dataset:', err.message);
-      return mockStore.getEmails({ page, limit, label, search, isStarred, isRead });
+      logger.error('Gmail API list error:', err.message);
+      return {
+        emails: [],
+        pagination: {
+          page: Number(page),
+          limit: Number(limit),
+          total: 0,
+          totalPages: 1,
+        },
+      };
     }
   }
 
@@ -131,8 +145,8 @@ export class GmailService {
       const messages = (res.data.messages || []).map(m => this.parseGmailMessage(m, threadId));
       return messages[messages.length - 1] || null;
     } catch (err) {
-      logger.warn('Gmail API getThread error, falling back:', err.message);
-      return mockStore.getThread(threadId);
+      logger.warn('Gmail API getThread error:', err.message);
+      return null;
     }
   }
 
@@ -172,7 +186,7 @@ export class GmailService {
       return { messageId, isRead, isStarred, success: true };
     } catch (err) {
       logger.error('Gmail API modify error:', err.message);
-      return mockStore.modifyEmail(messageId, { isRead, isStarred, addLabels, removeLabels });
+      return null;
     }
   }
 
@@ -206,7 +220,7 @@ export class GmailService {
       };
     } catch (err) {
       logger.error('Gmail API send error:', err.message);
-      return mockStore.sendEmail({ to, subject, body, threadId });
+      return null;
     }
   }
 

@@ -8,6 +8,11 @@ import { activeUserStore } from './userStore.js';
 import { logger } from '../utils/logger.js';
 import crypto from 'crypto';
 
+function normalizeUserRecord(user) {
+  if (!user) return null;
+  return typeof user.toObject === 'function' ? user.toObject({ getters: true }) : user;
+}
+
 export class OAuthService {
   /**
    * Generates Google Consent URL with restricted scopes
@@ -89,10 +94,11 @@ export class OAuthService {
     }
 
     // Persist in active user store for instant access across requests
-    activeUserStore.setUser(user._id, user);
+    const userRecord = normalizeUserRecord(user);
+    activeUserStore.setUser(userRecord._id, userRecord);
 
-    const token = this.generateSessionToken(user);
-    return { user, token };
+    const token = this.generateSessionToken(userRecord);
+    return { user: userRecord, token };
   }
 
   static generateSessionToken(user) {
