@@ -9,7 +9,8 @@ export class AuthController {
    */
   static async getGoogleUrl(req, res, next) {
     try {
-      const url = OAuthService.getConsentUrl();
+      const clientOrigin = req.headers.origin || process.env.CLIENT_URL || 'http://localhost:5173';
+      const url = OAuthService.getConsentUrl(clientOrigin);
       res.json({
         success: true,
         url,
@@ -26,7 +27,7 @@ export class AuthController {
    */
   static async handleGoogleCallback(req, res, next) {
     try {
-      const { code, mock } = req.query;
+      const { code, mock, state } = req.query;
       const { user, token } = await OAuthService.handleCallback(code, mock === 'true');
 
       // Set secure HTTP-Only session cookie
@@ -37,8 +38,22 @@ export class AuthController {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
-      // Return to the SPA root after login so Vercel does not serve a 404 on a deep link.
-      const clientRedirectUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/?auth=success`;
+      const fallbackClientOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+      const requestedOrigin = typeof state === 'string' ? state : '';
+      const isAllowedOrigin = (() => {
+        try {
+          const parsedUrl = new URL(requestedOrigin);
+          return (
+            parsedUrl.protocol === 'https:' && parsedUrl.hostname.endsWith('.vercel.app')
+          ) || (
+            parsedUrl.hostname === 'localhost' || parsedUrl.hostname === '127.0.0.1'
+          );
+        } catch {
+          return false;
+        }
+      })();
+      const clientOrigin = isAllowedOrigin ? requestedOrigin : fallbackClientOrigin;
+      const clientRedirectUrl = `${clientOrigin}/?auth=success`;
       res.redirect(clientRedirectUrl);
     } catch (err) {
       next(err);

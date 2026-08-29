@@ -30,7 +30,7 @@ app.use(helmet({
   crossOriginResourcePolicy: false,
 }));
 
-// In production CLIENT_URL is the Vercel deployment URL; locally allow common dev ports
+// Allow the configured client origin plus any Vercel production deployment and local dev ports.
 const allowedOrigins = [
   CLIENT_URL,
   'http://localhost:5173',
@@ -40,8 +40,19 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, cb) => {
-    // Allow server-to-server (no origin) and listed origins
+    // Allow server-to-server (no origin), listed origins, and any Vercel production origin.
     if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+
+    try {
+      const parsedOrigin = new URL(origin);
+      const isLocalhost = parsedOrigin.hostname === 'localhost' || parsedOrigin.hostname === '127.0.0.1';
+      const isVercelProduction = parsedOrigin.protocol === 'https:' && parsedOrigin.hostname.endsWith('.vercel.app');
+
+      if (isLocalhost || isVercelProduction) return cb(null, true);
+    } catch {
+      // Fall through to rejection below.
+    }
+
     cb(new Error(`CORS blocked: ${origin}`));
   },
   credentials: true,

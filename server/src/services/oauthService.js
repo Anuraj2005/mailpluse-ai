@@ -11,19 +11,25 @@ export class OAuthService {
   /**
    * Generates Google Consent URL with restricted scopes
    */
-  static getConsentUrl() {
+  static getConsentUrl(state) {
     if (!isGoogleOAuthConfigured()) {
       // In dev mode without GCP keys, return special direct mock URL
       return `${process.env.CLIENT_URL || 'http://localhost:5173'}/auth/callback?mock=true`;
     }
 
     const oauth2Client = getOAuth2Client();
-    return oauth2Client.generateAuthUrl({
+    const authUrlOptions = {
       access_type: 'offline',
       prompt: 'consent select_account',
       scope: OAUTH_SCOPES,
       include_granted_scopes: true,
-    });
+    };
+
+    if (state) {
+      authUrlOptions.state = state;
+    }
+
+    return oauth2Client.generateAuthUrl(authUrlOptions);
   }
 
   /**
