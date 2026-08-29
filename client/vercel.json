@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://mailpluse-ai.onrender.com"
+      "destination": "https://mailpluse-ai.onrender.com/api/$1"
     }
   ],
   "headers": [

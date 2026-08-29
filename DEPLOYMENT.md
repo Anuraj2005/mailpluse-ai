@@ -107,7 +107,7 @@ Go to **Environment** tab and add each variable:
 > ```
 
 4. Click **Create Web Service** and wait for the deploy (2–5 min).
-5. Note your service URL: `https://mailpulse-ai-server.onrender.com`
+5. Note your service URL: `https://mailpluse-ai.onrender.com`
 
 ---
 
@@ -122,7 +122,7 @@ Open [`client/vercel.json`](./client/vercel.json) and replace the placeholder wi
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://mailpulse-ai-server.onrender.com/api/$1"
+      "destination": "https://mailpluse-ai.onrender.com/api/$1"
     }
   ]
 }
@@ -167,7 +167,7 @@ You **must** update your Google Cloud Console to allow the new production URLs.
    ```
 4. Under **Authorized redirect URIs**, add:
    ```
-   https://mailpulse-ai-server.onrender.com/api/v1/auth/google/callback
+  https://mailpluse-ai.onrender.com/api/v1/auth/google/callback
    ```
 5. Click **Save**.
 

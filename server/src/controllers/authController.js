@@ -33,12 +33,12 @@ export class AuthController {
       res.cookie('mailpulse_session', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
-      // If called via browser redirect
-      const clientRedirectUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard/inbox?auth=success`;
+      // Return to the SPA root after login so Vercel does not serve a 404 on a deep link.
+      const clientRedirectUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/?auth=success`;
       res.redirect(clientRedirectUrl);
     } catch (err) {
       next(err);
@@ -116,7 +116,7 @@ export class AuthController {
       res.clearCookie('mailpulse_session', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       });
 
       res.json({
