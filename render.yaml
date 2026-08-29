@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: mailpulse-ai-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        sync: false   # Set this manually in Render dashboard (your Vercel URL)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        sync: false   # Set manually – must be 64 hex chars
+      - key: MONGODB_URI
+        sync: false   # Set manually – MongoDB Atlas connection string
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false   # https://mailpulse-ai-server.onrender.com/api/v1/auth/google/callback
+      - key: GEMINI_API_KEY
+        sync: false
