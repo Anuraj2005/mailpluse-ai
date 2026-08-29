@@ -13,7 +13,6 @@ export const api = axios.create({
 export const authApi = {
   getGoogleUrl: async () => (await api.get('/auth/google/url')).data,
   getMe: async () => (await api.get('/auth/me')).data,
-  loginDemo: async () => (await api.post('/auth/demo')).data,
   logout: async () => (await api.post('/auth/logout')).data,
   updateSettings: async (settings) => (await api.post('/auth/settings', settings)).data,
 };

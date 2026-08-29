@@ -18,28 +18,19 @@ import { authApi } from '../../lib/api';
 import { useMailStore } from '../../store/useMailStore';
 
 export function LandingPage() {
-  const { setUser } = useMailStore();
   const [isLoadingAuth, setIsLoadingAuth] = useState(false);
 
   const [configNotice, setConfigNotice] = useState('');
 
-  const handleLogin = async (isDemo = false) => {
+  const handleLogin = async () => {
     setIsLoadingAuth(true);
     setConfigNotice('');
     try {
-      if (isDemo) {
-        const res = await authApi.loginDemo();
-        if (res.user) {
-          setUser(res.user);
-        }
-        return;
-      }
-
       const res = await authApi.getGoogleUrl();
       if (res.isOAuthConfigured && res.url) {
         window.location.href = res.url;
       } else {
-        setConfigNotice('Google OAuth credentials are not set in server/.env yet. Please save your GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in server/.env, or click "Explore Live Demo" below to test.');
+        setConfigNotice('Google OAuth credentials are not set in server/.env yet. Please save your GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in server/.env, then redeploy the backend.');
       }
     } catch (err) {
       console.error(err);
@@ -110,16 +101,9 @@ export function LandingPage() {
 
         <div className="flex items-center gap-3">
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleLogin(true)}
-          >
-            Explore Live Demo
-          </Button>
-          <Button
             variant="primary"
             size="sm"
-            onClick={() => handleLogin(false)}
+            onClick={handleLogin}
             isLoading={isLoadingAuth}
           >
             <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24">
@@ -151,7 +135,7 @@ export function LandingPage() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <button
-            onClick={() => handleLogin(false)}
+            onClick={handleLogin}
             className="w-full sm:w-auto flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl bg-white text-slate-900 font-bold text-sm shadow-xl hover:bg-slate-100 transition-all duration-200 active:scale-95"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -166,10 +150,10 @@ export function LandingPage() {
           <Button
             variant="secondary"
             size="lg"
-            onClick={() => handleLogin(true)}
+            onClick={handleLogin}
             className="w-full sm:w-auto"
           >
-            <span>Launch Workspace Demo</span>
+            <span>Connect Gmail with Google OAuth</span>
             <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
