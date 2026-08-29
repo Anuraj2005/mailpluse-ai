@@ -3,7 +3,6 @@ import { getOAuth2Client } from '../config/oauth.js';
 import { User } from '../models/User.js';
 import { EmailMetadata } from '../models/EmailMetadata.js';
 import { isDbConnected } from '../config/db.js';
-import { mockStore } from './mockDataService.js';
 import { activeUserStore } from './userStore.js';
 import { logger } from '../utils/logger.js';
 
@@ -12,7 +11,7 @@ export class GmailService {
    * Helper to construct authenticated Gmail API client from user tokens
    */
   static async getGmailClient(userId) {
-    if (!userId || userId.toString().startsWith('mock_')) {
+    if (!userId) {
       return null;
     }
 
@@ -53,7 +52,15 @@ export class GmailService {
     const gmail = await this.getGmailClient(userId);
 
     if (!gmail) {
-      return mockStore.getEmails({ page, limit, label, search, isStarred, isRead });
+      return {
+        emails: [],
+        pagination: {
+          page: Number(page),
+          limit: Number(limit),
+          total: 0,
+          totalPages: 1,
+        },
+      };
     }
 
     try {
@@ -111,7 +118,7 @@ export class GmailService {
     const gmail = await this.getGmailClient(userId);
 
     if (!gmail) {
-      return mockStore.getThread(threadId);
+      return null;
     }
 
     try {
@@ -136,7 +143,7 @@ export class GmailService {
     const gmail = await this.getGmailClient(userId);
 
     if (!gmail) {
-      return mockStore.modifyEmail(messageId, { isRead, isStarred, addLabels, removeLabels });
+      return null;
     }
 
     try {
@@ -176,7 +183,7 @@ export class GmailService {
     const gmail = await this.getGmailClient(userId);
 
     if (!gmail) {
-      return mockStore.sendEmail({ to, subject, body, threadId });
+      return null;
     }
 
     try {

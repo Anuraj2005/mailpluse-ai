@@ -8,8 +8,15 @@ export class AIController {
    */
   static async summarize(req, res, next) {
     try {
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required.',
+        });
+      }
+
       const { text, subject, sender, threadId, messageId } = req.body;
-      const userId = req.user?._id || 'mock_user_101';
+      const userId = req.user._id;
 
       let contentToSummarize = text;
       let emailSubject = subject;

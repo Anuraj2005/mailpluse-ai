@@ -7,8 +7,15 @@ export class EmailController {
    */
   static async listEmails(req, res, next) {
     try {
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required.',
+        });
+      }
+
       const { page = 1, limit = 20, label, search, isStarred, isRead } = req.query;
-      const userId = req.user?._id || 'mock_user_101';
+      const userId = req.user._id;
 
       const starredBool = isStarred !== undefined ? isStarred === 'true' : undefined;
       const readBool = isRead !== undefined ? isRead === 'true' : undefined;
@@ -38,8 +45,15 @@ export class EmailController {
    */
   static async getThread(req, res, next) {
     try {
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required.',
+        });
+      }
+
       const { threadId } = req.params;
-      const userId = req.user?._id || 'mock_user_101';
+      const userId = req.user._id;
 
       const thread = await GmailService.getThread(userId, threadId);
 
@@ -65,9 +79,16 @@ export class EmailController {
    */
   static async modifyEmail(req, res, next) {
     try {
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required.',
+        });
+      }
+
       const { messageId } = req.params;
       const { isRead, isStarred, addLabels, removeLabels } = req.body;
-      const userId = req.user?._id || 'mock_user_101';
+      const userId = req.user._id;
 
       const result = await GmailService.modifyEmail(userId, messageId, {
         isRead,
@@ -91,6 +112,13 @@ export class EmailController {
    */
   static async sendEmail(req, res, next) {
     try {
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required.',
+        });
+      }
+
       const { to, subject, body, threadId } = req.body;
 
       if (!to || !body) {
@@ -100,7 +128,7 @@ export class EmailController {
         });
       }
 
-      const userId = req.user?._id || 'mock_user_101';
+      const userId = req.user._id;
       const sentEmail = await GmailService.sendEmail(userId, {
         to,
         subject,

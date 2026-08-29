@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User.js';
 import { isDbConnected } from '../config/db.js';
-import { mockStore } from '../services/mockDataService.js';
 import { activeUserStore } from '../services/userStore.js';
 
 export async function authMiddleware(req, res, next) {
@@ -22,14 +21,15 @@ export async function authMiddleware(req, res, next) {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mailpulse_jwt_secret_dev_key');
+
+      if (decoded.userId && decoded.userId.toString().startsWith('mock_')) {
+        req.user = null;
+        return next();
+      }
       
       let user = activeUserStore.getUser(decoded.userId);
       if (!user && isDbConnected() && decoded.userId && !decoded.userId.toString().startsWith('mock_')) {
         user = await User.findById(decoded.userId);
-      }
-      
-      if (!user && decoded.userId && decoded.userId.toString().startsWith('mock_')) {
-        user = mockStore.getUser();
       }
 
       req.user = user || null;
