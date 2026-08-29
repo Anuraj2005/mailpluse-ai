@@ -1,6 +1,7 @@
 import { OAuthService } from '../services/oauthService.js';
 import { isGoogleOAuthConfigured } from '../config/oauth.js';
 import { mockStore } from '../services/mockDataService.js';
+import { activeUserStore } from '../services/userStore.js';
 
 export class AuthController {
   /**
@@ -128,6 +129,10 @@ export class AuthController {
    */
   static async logout(req, res, next) {
     try {
+      if (req.sessionId) {
+        activeUserStore.deleteSession(req.sessionId);
+      }
+
       res.clearCookie('mailpulse_session', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

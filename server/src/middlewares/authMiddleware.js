@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/User.js';
 import { isDbConnected } from '../config/db.js';
 import { activeUserStore } from '../services/userStore.js';
-import { decrypt } from '../utils/crypto.js';
 
 export async function authMiddleware(req, res, next) {
   try {
@@ -33,19 +32,20 @@ export async function authMiddleware(req, res, next) {
         user = await User.findById(decoded.userId);
       }
 
-      if (!user && decoded.sessionSnapshot) {
-        try {
-          const restoredUser = JSON.parse(decrypt(decoded.sessionSnapshot));
-          if (restoredUser?._id) {
-            activeUserStore.setUser(restoredUser._id, restoredUser);
-            user = restoredUser;
-          }
-        } catch (restoreError) {
-          // Ignore malformed snapshots and continue as unauthenticated.
-        }
+      if (!user && decoded.sessionId) {
+        user = activeUserStore.getSession(decoded.sessionId);
+      }
+
+      if (user && decoded.sessionId) {
+        activeUserStore.setSession(decoded.sessionId, user);
+      }
+
+      if (user && decoded.userId) {
+        activeUserStore.setUser(decoded.userId, user);
       }
 
       req.user = user || null;
+      req.sessionId = decoded.sessionId || null;
       next();
     } catch (err) {
       req.user = null;

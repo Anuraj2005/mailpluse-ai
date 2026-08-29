@@ -6,7 +6,7 @@ import { isDbConnected } from '../config/db.js';
 import { mockStore } from './mockDataService.js';
 import { activeUserStore } from './userStore.js';
 import { logger } from '../utils/logger.js';
-import { encrypt } from '../utils/crypto.js';
+import crypto from 'crypto';
 
 export class OAuthService {
   /**
@@ -96,21 +96,15 @@ export class OAuthService {
   }
 
   static generateSessionToken(user) {
-    const sessionSnapshot = encrypt(JSON.stringify({
-      _id: user._id,
-      googleId: user.googleId,
-      email: user.email,
-      displayName: user.displayName,
-      avatarUrl: user.avatarUrl,
-      tokens: user.tokens,
-      settings: user.settings,
-    }));
+    const sessionId = crypto.randomUUID();
+
+    activeUserStore.setSession(sessionId, user);
 
     const payload = {
       userId: user._id,
       email: user.email,
       googleId: user.googleId,
-      sessionSnapshot,
+      sessionId,
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET || 'mailpulse_jwt_secret_dev_key', {
