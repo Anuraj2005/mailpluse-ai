@@ -8,10 +8,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#090d16',
-        surface: '#0f172a',
-        surfaceLight: '#1e293b',
-        surfaceBorder: 'rgba(255, 255, 255, 0.08)',
+        background: 'var(--color-background)',
+        foreground: 'var(--color-foreground)',
+        surface: 'var(--color-surface)',
+        surfaceLight: 'var(--color-surface-light)',
+        surfaceBorder: 'var(--color-surface-border)',
         accent: {
           cyan: '#06b6d4',
           indigo: '#6366f1',

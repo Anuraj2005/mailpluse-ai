@@ -11,9 +11,11 @@ import { SettingsView } from './components/settings/SettingsView';
 import { LandingPage } from './components/landing/LandingPage';
 import { useMailStore } from './store/useMailStore';
 import { authApi, emailApi } from './lib/api';
+import { useTheme } from './hooks/useTheme';
 
 export function App() {
   const queryClient = useQueryClient();
+  useTheme();
   const {
     user,
     setUser,
@@ -106,7 +108,7 @@ export function App() {
 
   if (isInitializing) {
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-slate-100 space-y-4">
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-foreground space-y-4">
         <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-950/60 ring-1 ring-cyan-400/40 animate-bounce">
           <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -123,7 +125,7 @@ export function App() {
   }
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden bg-background">
+    <div className="h-screen w-screen flex overflow-hidden bg-background text-foreground">
       {/* Sidebar navigation */}
       <Sidebar />
 

@@ -12,12 +12,16 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   LogOut,
-  Sparkles
+  Sparkles,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { useMailStore } from '../../store/useMailStore';
 import { authApi } from '../../lib/api';
+import { useTheme } from '../../hooks/useTheme';
 
 export function Sidebar() {
+  const { isDark, toggleTheme } = useTheme();
   const { 
     user, 
     activeView, 
@@ -55,7 +59,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 flex flex-col justify-between h-screen glass-panel border-r border-slate-800 p-4 select-none z-20">
+    <aside className="w-64 flex-shrink-0 flex flex-col justify-between h-screen glass-panel border-r border-slate-800 p-4 select-none z-20 transition-colors duration-300">
       <div className="space-y-6">
         {/* Brand Header */}
         <div className="flex items-center gap-3 px-2 py-1">
@@ -63,10 +67,10 @@ export function Sidebar() {
             <Zap className="w-5 h-5 text-white fill-white" />
           </div>
           <div>
-            <h1 className="text-base font-bold tracking-tight text-white flex items-center gap-1.5">
+            <h1 className={`text-base font-bold tracking-tight flex items-center gap-1.5 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
               MailPulse <span className="text-xs px-1.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-400 font-semibold border border-cyan-500/30">AI</span>
             </h1>
-            <p className="text-[11px] text-slate-400 font-medium">Executive Inbox</p>
+            <p className={`text-[11px] font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Executive Inbox</p>
           </div>
         </div>
 
@@ -138,7 +142,7 @@ export function Sidebar() {
       </div>
 
       {/* User Profile & Footer */}
-      <div className="pt-4 border-t border-slate-800/80 space-y-3">
+        <div className="pt-4 border-t border-slate-800/80 space-y-3">
         <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/60 border border-slate-800">
           <img
             src={user?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
@@ -158,11 +162,20 @@ export function Sidebar() {
           </button>
         </div>
 
-        <div className="flex items-center justify-between text-[11px] text-slate-500 px-2">
-          <span className="flex items-center gap-1">
+        <div className="flex items-center justify-between text-[11px] px-2 gap-2">
+          <span className={`flex items-center gap-1 ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> AES-256 Auth
           </span>
-          <span className="text-[10px] text-cyan-400/80">v1.0.0</span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+              className={`p-1.5 rounded-lg border transition-colors ${isDark ? 'bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'}`}
+            >
+              {isDark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+            </button>
+            <span className="text-[10px] text-cyan-400/80">v1.0.0</span>
+          </div>
         </div>
       </div>
     </aside>
