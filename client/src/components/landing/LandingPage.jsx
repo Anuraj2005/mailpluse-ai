@@ -43,8 +43,7 @@ export function LandingPage() {
       }
     } catch (err) {
       console.error(err);
-      const res = await authApi.loginDemo();
-      if (res.user) setUser(res.user);
+      setConfigNotice('Google sign-in could not start. Please try again or verify the deployed backend API URL and Google OAuth settings.');
     } finally {
       setIsLoadingAuth(false);
     }
