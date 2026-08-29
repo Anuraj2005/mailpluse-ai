@@ -25,17 +25,17 @@ export function Sidebar() {
     activeLabel, 
     setActiveLabel, 
     openCompose,
-    setUser 
+    resetSessionState 
   } = useMailStore();
 
   const handleLogout = async () => {
     try {
       await authApi.logout();
-      setUser(null);
+      resetSessionState();
       window.location.href = '/';
     } catch (e) {
       console.error(e);
-      setUser(null);
+      resetSessionState();
       window.location.href = '/';
     }
   };
@@ -142,12 +142,12 @@ export function Sidebar() {
         <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/60 border border-slate-800">
           <img
             src={user?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
-            alt="Avatar"
+            alt={user?.displayName || 'Signed out'}
             className="w-8 h-8 rounded-lg object-cover ring-1 ring-cyan-500/40"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-slate-200 truncate">{user?.displayName || 'Alex Morgan'}</p>
-            <p className="text-[10px] text-slate-400 truncate">{user?.email || 'alex.morgan@techcorp.io'}</p>
+            <p className="text-xs font-semibold text-slate-200 truncate">{user?.displayName || 'Not signed in'}</p>
+            <p className="text-[10px] text-slate-400 truncate">{user?.email || 'Connect Gmail to load messages'}</p>
           </div>
           <button
             onClick={handleLogout}

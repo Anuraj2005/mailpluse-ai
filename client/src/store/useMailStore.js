@@ -28,4 +28,18 @@ export const useMailStore = create((set) => ({
     set((state) => ({
       aiSummariesCache: { ...state.aiSummariesCache, [messageId]: summaryData }
     })),
+  resetSessionState: () => set({
+    user: null,
+    isAuthenticated: false,
+    activeView: 'inbox',
+    activeLabel: 'ALL',
+    searchQuery: '',
+    selectedThreadId: null,
+    isComposeOpen: false,
+    composeInitialData: null,
+    isExplainModalOpen: false,
+    explainTargetEmail: null,
+    defaultTone: 'Professional',
+    aiSummariesCache: {},
+  }),
 }));
