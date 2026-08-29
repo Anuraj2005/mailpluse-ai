@@ -149,9 +149,11 @@ Go back to Render → Your service → **Environment** → update:
 
 | Key | Value |
 |---|---|
-| `CLIENT_URL` | `https://mailpulse-ai.vercel.app` |
+| `CLIENT_URL` | Your live Vercel **production** URL, for example `https://mailpulse-ai.vercel.app` |
 
 Click **Save Changes** → Render will auto-redeploy.
+
+> Important: use the production domain shown in Vercel, not a preview deployment URL. If the URL is stale or deleted, Google sign-in will succeed and then redirect to Vercel's `DEPLOYMENT_NOT_FOUND` page.
 
 ---
 
