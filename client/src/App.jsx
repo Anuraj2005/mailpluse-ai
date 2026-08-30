@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Sidebar } from './components/dashboard/Sidebar';
 import { EmailList } from './components/dashboard/EmailList';
 import { ThreadView } from './components/dashboard/ThreadView';
@@ -12,8 +13,10 @@ import { LandingPage } from './components/landing/LandingPage';
 import { useMailStore } from './store/useMailStore';
 import { authApi, emailApi } from './lib/api';
 import { useTheme } from './hooks/useTheme';
+import PrivacyPolicy from './app/privacy/page';
+import TermsPage from './app/terms/page';
 
-export function App() {
+function AppShell() {
   const queryClient = useQueryClient();
   useTheme();
   const {
@@ -39,7 +42,6 @@ export function App() {
     setSelectedThreadId(null);
   }, [user, queryClient, setSelectedThreadId]);
 
-  // Initialize Auth Status
   useEffect(() => {
     async function checkAuth() {
       try {
@@ -56,7 +58,6 @@ export function App() {
     checkAuth();
   }, [setUser]);
 
-  // Fetch Synced Emails
   const {
     data: emailData,
     isLoading: isEmailsLoading,
@@ -65,12 +66,11 @@ export function App() {
     queryKey: ['emails', activeLabel, searchQuery],
     queryFn: () => emailApi.list({ label: activeLabel, search: searchQuery }),
     enabled: Boolean(user),
-    staleTime: 1000 * 30, // 30s cache
+    staleTime: 1000 * 30,
   });
 
   const emails = emailData?.data || [];
 
-  // Auto-select first thread if none selected
   useEffect(() => {
     if (emails.length > 0 && !selectedThreadId) {
       setSelectedThreadId(emails[0].threadId);
@@ -79,7 +79,6 @@ export function App() {
 
   const selectedEmail = emails.find((e) => e.threadId === selectedThreadId) || (emails.length > 0 ? emails[0] : null);
 
-  // Optimistic/direct email updates
   const handleUpdateEmail = (messageId, updates) => {
     queryClient.setQueryData(['emails', activeLabel, searchQuery], (old) => {
       if (!old?.data) return old;
@@ -119,17 +118,14 @@ export function App() {
     );
   }
 
-  // If not logged in, render Landing Page
   if (!user) {
     return <LandingPage />;
   }
 
   return (
     <div className="h-screen w-screen flex overflow-hidden bg-background text-foreground">
-      {/* Sidebar navigation */}
       <Sidebar />
 
-      {/* Main Content Area */}
       <main className="flex-1 flex overflow-hidden">
         {activeView === 'inbox' && (
           <div className="flex-1 flex overflow-hidden">
@@ -147,23 +143,26 @@ export function App() {
           </div>
         )}
 
-        {activeView === 'search' && (
-          <SmartSearch emails={emails} />
-        )}
-
-        {activeView === 'analytics' && (
-          <AnalyticsView emails={emails} />
-        )}
-
-        {activeView === 'settings' && (
-          <SettingsView />
-        )}
+        {activeView === 'search' && <SmartSearch emails={emails} />}
+        {activeView === 'analytics' && <AnalyticsView emails={emails} />}
+        {activeView === 'settings' && <SettingsView />}
       </main>
 
-      {/* Global Modals */}
       <ComposeModal />
       <ExplainModal />
     </div>
   );
 }
+
+export function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<AppShell />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
 export default App;

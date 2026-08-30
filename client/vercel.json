@@ -7,6 +7,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://mailpluse-ai.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
