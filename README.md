@@ -54,6 +54,19 @@ Frontend URL: mailpluse-ai.vercel.app
 
 Backend/API URL: https://mailpluse-ai.onrender.com
 
+## Legal Pages
+
+After deploying to Vercel, the privacy and terms pages will be available at:
+
+- Privacy Policy URL: https://your-app.vercel.app/privacy
+- Terms of Service URL: https://your-app.vercel.app/terms
+
+To deploy these pages:
+
+1. Push the changes to GitHub.
+2. Vercel will automatically rebuild and deploy the frontend.
+3. Use the generated public URLs above for your Google OAuth privacy requirements.
+
 ## 8. Setup Instructions
 
 ### Prerequisites
