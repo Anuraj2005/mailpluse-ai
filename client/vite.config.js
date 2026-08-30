@@ -6,9 +6,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    esbuild: {
-      jsx: 'automatic',
-    },
     server: {
       port: 5173,
       proxy: {
