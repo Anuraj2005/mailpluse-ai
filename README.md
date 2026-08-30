@@ -1,3 +1,4 @@
+<img width="1917" height="876" alt="Screenshot 2026-08-30 115917" src="https://github.com/user-attachments/assets/944c15e9-885a-46a2-a093-e6615afd0302" />
 # MailPulse AI
 
 MailPulse AI is an AI-powered inbox assistant that helps users process email faster, stay organized, and respond with better context. It combines Google OAuth authentication, Gmail integration, and AI-generated summaries, action items, and reply drafts into a single productivity dashboard.
@@ -34,11 +35,16 @@ Professionals and teams are overwhelmed by high email volume, missed follow-ups,
 
 ## 5. Screenshots
 
-![Landing Page](https://placehold.co/1200x700/0f172a/ffffff?text=MailPulse+AI+Landing+Page)
+![Landing Page]<img width="1917" height="876" alt="Screenshot 2026-08-30 115917" src="https://github.com/user-attachments/assets/adaddc5b-a7c8-42ac-a883-72f8d3a7a4c6" />
 
-![Inbox Dashboard](https://placehold.co/1200x700/1f2937/ffffff?text=MailPulse+AI+Inbox+Dashboard)
 
-![AI Summary and Reply Panel](https://placehold.co/1200x700/111827/ffffff?text=AI+Summary+%26+Reply+Assistant)
+![Inbox Dashboard]<img width="1902" height="867" alt="Screenshot 2026-08-30 120137" src="https://github.com/user-attachments/assets/94239838-445f-42a6-b62c-8bcb88dac0a8" />
+
+
+
+![AI Summary and Reply Panel]
+<img width="1897" height="860" alt="Screenshot 2026-08-30 120224" src="https://github.com/user-attachments/assets/44bc2462-dbd9-444c-be3d-fac2eef54cf6" />
+
 
 ## 6. Live Demo
 
