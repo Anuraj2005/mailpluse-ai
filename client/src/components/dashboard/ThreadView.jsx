@@ -119,10 +119,10 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-950/20">
+    <div className="flex-1 flex flex-col h-[52vh] overflow-hidden bg-slate-950/20 md:h-screen">
       {/* Top Action Toolbar */}
-      <div className="flex items-center justify-between px-6 py-3.5 border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md">
-        <div className="flex items-center gap-1.5">
+      <div className="flex flex-col gap-3 border-b border-slate-800/80 bg-slate-950/60 px-3 py-3 backdrop-blur-md md:flex-row md:items-center md:justify-between md:px-6 md:py-3.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <button
             onClick={handleToggleStar}
             title={email.isStarred ? 'Unstar' : 'Star'}
@@ -153,12 +153,13 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <Button
             variant="ai"
             size="sm"
             onClick={() => handleGenerateReply()}
             isLoading={isSynthesizing}
+            className="w-full sm:w-auto"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>AI Smart Reply</span>
@@ -167,6 +168,7 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
             variant="secondary"
             size="sm"
             onClick={() => openCompose({ to: email.sender?.email, subject: `Re: ${email.subject}` })}
+            className="w-full sm:w-auto"
           >
             <Reply className="w-3.5 h-3.5" />
             <span>Full Reply</span>
@@ -175,7 +177,7 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
       </div>
 
       {/* Main Email Thread Content */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-3 space-y-4 md:p-6 md:space-y-6">
         {/* Email Header */}
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4">
@@ -193,7 +195,7 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div className="flex flex-col gap-3 rounded-xl bg-slate-900/60 border border-slate-800 p-3.5 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md">
                 {(email.sender?.name || email.sender?.email || 'U')[0].toUpperCase()}
@@ -207,7 +209,7 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
                 </p>
               </div>
             </div>
-            <span className="text-xs text-slate-400 font-medium">
+            <span className="text-[11px] text-slate-400 font-medium md:text-xs">
               {new Date(email.receivedAt).toLocaleString([], {
                 month: 'short',
                 day: 'numeric',

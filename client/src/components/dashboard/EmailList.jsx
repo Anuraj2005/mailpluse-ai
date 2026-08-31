@@ -43,9 +43,9 @@ export function EmailList({ emails, isLoading, onRefresh, onToggleStar }) {
   };
 
   return (
-    <div className="w-80 md:w-96 flex-shrink-0 flex flex-col h-screen border-r border-slate-800/80 bg-slate-950/40">
+    <div className="w-full flex-shrink-0 flex flex-col h-[48vh] border-b border-slate-800/80 bg-slate-950/40 md:h-screen md:w-80 md:border-b-0 md:border-r lg:w-96">
       {/* List Header */}
-      <div className="p-4 border-b border-slate-800 space-y-3">
+      <div className="p-3 md:p-4 border-b border-slate-800 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-slate-100">{getLabelTitle()}</h2>

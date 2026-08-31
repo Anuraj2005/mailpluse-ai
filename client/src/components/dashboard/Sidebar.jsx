@@ -59,19 +59,28 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 flex flex-col justify-between h-screen glass-panel border-r border-slate-800 p-4 select-none z-20 transition-colors duration-300">
-      <div className="space-y-6">
+    <aside className="w-full flex-shrink-0 flex flex-col justify-between border-b border-slate-800/80 bg-slate-950/60 glass-panel p-3 md:w-64 md:h-screen md:border-b-0 md:border-r md:p-4 select-none z-20 transition-colors duration-300">
+      <div className="space-y-4 md:space-y-6">
         {/* Brand Header */}
-        <div className="flex items-center gap-3 px-2 py-1">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-950/60 ring-1 ring-cyan-400/40">
-            <Zap className="w-5 h-5 text-white fill-white" />
+        <div className="flex items-center justify-between gap-3 px-2 py-1 md:justify-start">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-950/60 ring-1 ring-cyan-400/40">
+              <Zap className="w-5 h-5 text-white fill-white" />
+            </div>
+            <div>
+              <h1 className={`text-base font-bold tracking-tight flex items-center gap-1.5 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+                MailPulse <span className="text-xs px-1.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-400 font-semibold border border-cyan-500/30">AI</span>
+              </h1>
+              <p className={`text-[11px] font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Executive Inbox</p>
+            </div>
           </div>
-          <div>
-            <h1 className={`text-base font-bold tracking-tight flex items-center gap-1.5 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-              MailPulse <span className="text-xs px-1.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-400 font-semibold border border-cyan-500/30">AI</span>
-            </h1>
-            <p className={`text-[11px] font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Executive Inbox</p>
-          </div>
+          <button
+            onClick={toggleTheme}
+            title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+            className={`p-2 rounded-lg border md:hidden transition-colors ${isDark ? 'bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'}`}
+          >
+            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
         </div>
 
         {/* Compose Button */}
@@ -166,7 +175,7 @@ export function Sidebar() {
           <span className={`flex items-center gap-1 ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> AES-256 Auth
           </span>
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 md:flex">
             <button
               onClick={toggleTheme}
               title={`Switch to ${isDark ? 'light' : 'dark'} mode`}

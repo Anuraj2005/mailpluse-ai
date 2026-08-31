@@ -123,12 +123,12 @@ function AppShell() {
   }
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden bg-background text-foreground">
+    <div className="h-screen w-screen flex flex-col overflow-hidden bg-background text-foreground md:flex-row">
       <Sidebar />
 
-      <main className="flex-1 flex overflow-hidden">
+      <main className="flex-1 flex min-w-0 flex-col overflow-hidden md:flex-row">
         {activeView === 'inbox' && (
-          <div className="flex-1 flex overflow-hidden">
+          <div className="flex-1 flex min-w-0 flex-col overflow-hidden md:flex-row">
             <EmailList
               emails={emails}
               isLoading={isEmailsLoading}
