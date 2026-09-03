@@ -9,7 +9,6 @@ import { ExplainModal } from './components/ai/ExplainModal';
 import { SmartSearch } from './components/search/SmartSearch';
 import { AnalyticsView } from './components/analytics/AnalyticsView';
 import { SettingsView } from './components/settings/SettingsView';
-import { AISummaryCard } from './components/ai/AISummaryCard';
 import { LandingPage } from './components/landing/LandingPage';
 import { useMailStore } from './store/useMailStore';
 import { authApi, emailApi } from './lib/api';
@@ -17,6 +16,7 @@ import { useTheme } from './hooks/useTheme';
 import PrivacyPolicy from './app/privacy/page';
 import TermsPage from './app/terms/page';
 import { Menu, Search, Sparkles, Zap, Plus } from 'lucide-react';
+import { AISummaryCard } from './components/ai/AISummaryCard';
 import { ActionItemsBadge } from './components/ai/ActionItemsBadge';
 import { ToneSelector } from './components/ai/ToneSelector';
 
@@ -162,12 +162,6 @@ function AppShell() {
             <div className={`${selectedThreadId ? 'flex' : 'hidden lg:flex'} min-h-0 min-w-0 flex-1`}>
               <ThreadView email={selectedEmail} onUpdateEmail={handleUpdateEmail} onRefresh={refetchEmails} />
             </div>
-            <aside className="hidden w-[22rem] shrink-0 border-l border-slate-800/80 bg-slate-950/40 p-4 xl:block">
-              <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-300">
-                <Sparkles className="h-4 w-4" /> AI Pulse Copilot
-              </div>
-              {selectedEmail && <AISummaryCard email={selectedEmail} onUpdateAnalysis={(analysis) => handleUpdateEmail(selectedEmail.messageId || selectedEmail._id, { aiAnalysis: { ...selectedEmail.aiAnalysis, ...analysis } })} />}
-            </aside>
           </div>
         )}
 
