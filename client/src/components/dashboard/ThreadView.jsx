@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   Calendar,
   AlertCircle
+  ,ArrowLeft
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -24,7 +25,7 @@ import { useMailStore } from '../../store/useMailStore';
 import { emailApi, aiApi } from '../../lib/api';
 
 export function ThreadView({ email, onUpdateEmail, onRefresh }) {
-  const { openCompose, openExplainModal, defaultTone } = useMailStore();
+  const { openCompose, openExplainModal, defaultTone, setSelectedThreadId } = useMailStore();
   const [selectedTone, setSelectedTone] = useState(defaultTone || 'Professional');
   const [replyText, setReplyText] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -119,10 +120,17 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-[52vh] overflow-hidden bg-slate-950/20 md:h-screen">
+    <div className="flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-slate-950/20">
       {/* Top Action Toolbar */}
       <div className="flex flex-col gap-3 border-b border-slate-800/80 bg-slate-950/60 px-3 py-3 backdrop-blur-md md:flex-row md:items-center md:justify-between md:px-6 md:py-3.5">
         <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            onClick={() => setSelectedThreadId(null)}
+            title="Back to inbox"
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 lg:hidden"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
           <button
             onClick={handleToggleStar}
             title={email.isStarred ? 'Unstar' : 'Star'}
@@ -177,7 +185,7 @@ export function ThreadView({ email, onUpdateEmail, onRefresh }) {
       </div>
 
       {/* Main Email Thread Content */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-4 md:p-6 md:space-y-6">
+      <div className="flex-1 space-y-4 overflow-y-auto p-3 pb-24 md:space-y-6 md:p-6">
         {/* Email Header */}
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4">

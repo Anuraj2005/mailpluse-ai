@@ -43,7 +43,7 @@ export function EmailList({ emails, isLoading, onRefresh, onToggleStar }) {
   };
 
   return (
-    <div className="w-full flex-shrink-0 flex flex-col h-[48vh] border-b border-slate-800/80 bg-slate-950/40 md:h-screen md:w-80 md:border-b-0 md:border-r lg:w-96">
+    <div className="flex h-full w-full min-w-0 flex-shrink-0 flex-col border-b border-slate-800/80 bg-slate-950/40 lg:border-b-0 lg:border-r">
       {/* List Header */}
       <div className="p-3 md:p-4 border-b border-slate-800 space-y-3">
         <div className="flex items-center justify-between">
@@ -76,7 +76,7 @@ export function EmailList({ emails, isLoading, onRefresh, onToggleStar }) {
       </div>
 
       {/* Email Thread Cards Container */}
-      <div className="flex-1 overflow-y-auto divide-y divide-slate-800/40 p-2 space-y-1">
+      <div className="flex-1 overflow-y-auto divide-y divide-slate-800/40 p-1.5 md:p-2">
         {isLoading ? (
           <div className="p-3 space-y-3">
             {[1, 2, 3, 4, 5].map((n) => (
@@ -106,7 +106,7 @@ export function EmailList({ emails, isLoading, onRefresh, onToggleStar }) {
               <div
                 key={email._id || email.messageId}
                 onClick={() => setSelectedThreadId(email.threadId)}
-                className={`group relative p-3.5 rounded-xl cursor-pointer transition-all duration-150 border ${
+                className={`group relative min-h-[64px] cursor-pointer border-b px-3 py-3 transition-all duration-150 sm:min-h-0 sm:rounded-lg sm:border ${
                   isSelected
                     ? 'bg-slate-800/90 border-cyan-500/40 shadow-lg shadow-cyan-950/20'
                     : email.isRead
@@ -132,7 +132,7 @@ export function EmailList({ emails, isLoading, onRefresh, onToggleStar }) {
                         e.stopPropagation();
                         onToggleStar(email);
                       }}
-                      className="text-slate-500 hover:text-amber-400 transition-colors p-0.5"
+                      className="flex h-11 w-11 items-center justify-center text-slate-500 transition-colors hover:text-amber-400"
                     >
                       <Star className={`w-3.5 h-3.5 ${email.isStarred ? 'fill-amber-400 text-amber-400' : ''}`} />
                     </button>
